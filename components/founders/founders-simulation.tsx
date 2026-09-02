@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { ContextBar } from '../context-bar'
 import { Sidebar } from '../sidebar'
 import { ToastStack } from '../toast-stack'
+import { BrandMark } from '../brand'
 import { StageOneMemo } from './stage-1-memo'
 import { StageTwoQueue } from './stage-2-queue'
 import { StageThreeEvidence } from './stage-3-evidence'
@@ -300,9 +301,7 @@ export function FoundersSimulation() {
         <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:px-10">
           {/* mobile brand */}
           <div className="mb-6 flex items-center gap-3 md:hidden">
-            <div className="flex size-8 items-center justify-center rounded-[var(--radius-sm)] bg-gilt">
-              <span className="text-sm font-extrabold text-void">P</span>
-            </div>
+            <BrandMark className="h-7 w-auto" />
             <p className="text-lg font-extrabold text-text-warm">Provd</p>
           </div>
 

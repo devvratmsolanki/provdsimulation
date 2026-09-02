@@ -9,7 +9,15 @@ import { StageBudget } from './stage-budget'
 import { StagePipeline } from './stage-pipeline'
 import { TalentReport } from './talent-report'
 import { ToastStack } from './toast-stack'
-import { freshStats, type FundingSource, type OperatorStats, type Stage, type ToastItem, type ToastType } from '@/lib/sim-types'
+import { BrandMark } from './brand'
+import {
+  freshStats,
+  type FundingSource,
+  type OperatorStats,
+  type Stage,
+  type ToastItem,
+  type ToastType,
+} from '@/lib/sim-types'
 import { generateAIReport } from '@/lib/report'
 
 export function Simulation() {
@@ -88,9 +96,7 @@ export function Simulation() {
         <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-8 sm:px-10">
           {/* mobile brand */}
           <div className="mb-6 flex items-center gap-3 md:hidden">
-            <div className="flex size-8 items-center justify-center rounded-[var(--radius-sm)] bg-gilt">
-              <span className="text-sm font-extrabold text-void">P</span>
-            </div>
+            <BrandMark className="h-7 w-auto" />
             <p className="text-lg font-extrabold text-text-warm">Provd</p>
           </div>
 

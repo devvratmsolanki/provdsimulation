@@ -1,6 +1,7 @@
 'use client'
 
 import { Check } from 'lucide-react'
+import { BrandLockup } from './brand'
 
 const DEFAULT_STEPS: { step: number; label: string }[] = [
   { step: 1, label: 'Mission Brief' },
@@ -33,18 +34,8 @@ export function Sidebar({
 }: SidebarProps) {
   return (
     <aside className="sticky top-0 hidden h-screen w-72 flex-col border-r border-border-dark bg-carbon px-6 py-8 md:flex">
-      <div className="mb-10 flex items-center gap-3">
-        <div className="flex size-9 items-center justify-center rounded-[var(--radius-sm)] bg-gilt">
-          <span className="text-sm font-extrabold text-void">P</span>
-        </div>
-        <div>
-          <p className="text-lg font-extrabold leading-none tracking-tight text-text-warm">
-            Provd
-          </p>
-          <p className="mt-0.5 text-[11px] uppercase tracking-wide text-muted-ink">
-            {subtitle}
-          </p>
-        </div>
+      <div className="mb-10">
+        <BrandLockup sub={subtitle} />
       </div>
 
       <nav className="flex-1 space-y-1">
@@ -88,9 +79,7 @@ export function Sidebar({
           <span className="pulse inline-block size-[9px] rounded-full bg-pass" />
           Live Sandbox Session
         </div>
-        <p className="mt-2 text-[11px] text-muted-ink">
-          {`Est. duration: ${duration}`}
-        </p>
+        <p className="mt-2 text-[11px] text-muted-ink">{`Est. duration: ${duration}`}</p>
       </div>
     </aside>
   )

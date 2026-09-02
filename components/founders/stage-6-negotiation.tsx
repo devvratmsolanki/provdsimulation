@@ -9,6 +9,8 @@ import type { ToastType } from '@/lib/sim-types'
 export interface StageSixNegotiationProps {
   /** Carry from Stage 4/5 — sets the opening temperature (hot/cool/warm). */
   memoRecommendation: Rec
+  /** Overridden by the express run, whose Stage 6 is the last stage. */
+  ctaLabel?: string
   hireEng: number
   hireAE: number
   hireCSM: number
@@ -187,6 +189,7 @@ function optionsWarm(runwayMonths: number): Option[][] {
 }
 
 export function StageSixNegotiation({
+  ctaLabel = 'Proceed to Stage 7 — Narrative Under Scrutiny',
   hireEng,
   hireAE,
   hireCSM,
@@ -380,7 +383,7 @@ export function StageSixNegotiation({
           onClick={handleProceed}
           className="reveal-down mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
         >
-          Proceed to Stage 7 — Narrative Under Scrutiny
+          {ctaLabel}
           <ArrowRight className="size-4" />
         </button>
       )}

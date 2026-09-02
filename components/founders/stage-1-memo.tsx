@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { ArrowRight, Mic } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowRight, Mic, Play, Square } from 'lucide-react'
 import type { ToastType } from '@/lib/sim-types'
 
 export interface StageOneMemoProps {
@@ -83,6 +83,60 @@ export function StageOneMemo({ operatorName, setOperatorName, onProceed }: Stage
   const [tags, setTags] = useState<Record<string, Tag>>({})
   const [retags, setRetags] = useState(0)
 
+  // The player used to be a decorative prop with no play control, which read as
+  // broken rather than as set dressing. It now reads the memo aloud through the
+  // browser's own speech synthesis: no audio file to ship, no dependency.
+  const [canSpeak, setCanSpeak] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const [spokenLine, setSpokenLine] = useState(-1)
+  const cancelled = useRef(false)
+
+  useEffect(() => {
+    setCanSpeak(typeof window !== 'undefined' && 'speechSynthesis' in window)
+    return () => {
+      cancelled.current = true
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel()
+      }
+    }
+  }, [])
+
+  function stopPlayback() {
+    cancelled.current = true
+    window.speechSynthesis.cancel()
+    setPlaying(false)
+    setSpokenLine(-1)
+  }
+
+  function playMemo() {
+    if (playing) {
+      stopPlayback()
+      return
+    }
+    cancelled.current = false
+    window.speechSynthesis.cancel()
+    setPlaying(true)
+
+    // Queue one utterance per line so the transcript can follow along.
+    LINES.forEach((l, i) => {
+      const u = new SpeechSynthesisUtterance(l.text)
+      u.rate = 1.05
+      u.pitch = 1.05
+      u.onstart = () => {
+        if (!cancelled.current) setSpokenLine(i)
+      }
+      if (i === LINES.length - 1) {
+        u.onend = () => {
+          if (!cancelled.current) {
+            setPlaying(false)
+            setSpokenLine(-1)
+          }
+        }
+      }
+      window.speechSynthesis.speak(u)
+    })
+  }
+
   const tagged = LINES.filter((l) => tags[l.id]).length
   const ready = tagged === LINES.length
 
@@ -150,14 +204,35 @@ export function StageOneMemo({ operatorName, setOperatorName, onProceed }: Stage
             <p className="text-[13px] font-semibold text-text-warm">Priya Raghavan</p>
             <p className="text-[11px] text-muted-ink">Voice memo · 07:58</p>
           </div>
-          <p className="ml-auto font-mono text-[11px] tabular-nums text-muted-ink">0:00 / 1:34</p>
+          <p className="ml-auto font-mono text-[11px] tabular-nums text-muted-ink">
+            {playing ? `LINE ${spokenLine + 1} / ${LINES.length}` : `${LINES.length} LINES`}
+          </p>
         </div>
-        {/* decorative scrubber — not an input, not focusable */}
-        <div aria-hidden="true" className="cursor-default px-5 py-4">
+        <div className="flex items-center gap-4 px-5 py-4">
+          {canSpeak && (
+            <button
+              type="button"
+              onClick={playMemo}
+              aria-label={playing ? 'Stop the voice memo' : 'Play the voice memo'}
+              className="flex size-11 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-border-dark bg-surface text-gilt transition-colors hover:border-gilt sm:size-9"
+            >
+              {playing ? <Square className="size-4" /> : <Play className="ml-0.5 size-4" />}
+            </button>
+          )}
           <div className="relative h-[2px] w-full bg-border-dark">
-            <span className="absolute left-0 top-1/2 size-4 -translate-y-1/2 rounded-[var(--radius-sm)] border-2 border-void bg-gilt" />
+            <span
+              className="absolute left-0 top-0 h-full bg-gilt transition-[width] duration-300"
+              style={{
+                width: playing ? `${((spokenLine + 1) / LINES.length) * 100}%` : '0%',
+              }}
+            />
           </div>
         </div>
+        {!canSpeak && (
+          <p className="px-5 pb-4 text-[11px] text-muted-ink">
+            Playback is unavailable in this browser. The transcript below is the whole memo.
+          </p>
+        )}
       </div>
 
       {/* transcript */}
@@ -175,9 +250,9 @@ export function StageOneMemo({ operatorName, setOperatorName, onProceed }: Stage
             return (
               <div
                 key={l.id}
-                className={`grid grid-cols-1 gap-2.5 px-5 py-4 sm:grid-cols-[28px_1fr_auto] sm:items-start sm:gap-4 ${
-                  tag === 'NOISE' ? 'opacity-50' : ''
-                }`}
+                className={`grid grid-cols-1 gap-2.5 px-5 py-4 transition-colors sm:grid-cols-[28px_1fr_auto] sm:items-start sm:gap-4 ${
+                  spokenLine === i ? 'bg-gilt/[0.06]' : ''
+                } ${tag === 'NOISE' && spokenLine !== i ? 'opacity-50' : ''}`}
               >
                 <span className="font-mono text-[11px] leading-6 text-muted-ink">{`L${i + 1}`}</span>
                 <p

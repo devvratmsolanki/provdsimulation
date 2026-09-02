@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Award, Download, X } from 'lucide-react'
+import { Download, X } from 'lucide-react'
+import { BrandMark } from '../brand'
 import { founderReportHTML, founderTierColor, generateFounderReport } from '@/lib/founder-report'
 import type { FounderDimension } from '@/lib/founder-report'
 import type { FounderStats } from '@/lib/founder-sim-types'
@@ -158,11 +159,8 @@ export function FounderReport({
         {phase === 'result' && (
           <div className="p-6 sm:p-8">
             <div className="mb-6 text-center">
-              <div
-                className="mb-4 inline-flex size-16 items-center justify-center rounded-full border border-gilt"
-                style={{ background: 'rgba(200,169,110,0.15)' }}
-              >
-                <Award className="size-7 text-gilt" />
+              <div className="mb-4 flex justify-center">
+                <BrandMark className="h-12 w-auto" />
               </div>
               <div className="mb-3 inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] border border-border-dark bg-carbon px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em] text-gilt">
                 Provd — Talent Report (Preview)

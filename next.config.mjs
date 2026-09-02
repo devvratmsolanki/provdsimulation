@@ -7,6 +7,9 @@ const isPages = process.env.GITHUB_PAGES === 'true'
 
 const nextConfig = {
   output: 'export',
+  // next/image does not prefix basePath when images are unoptimized, so expose
+  // it for the handful of static asset URLs that need it (the brand mark).
+  env: { NEXT_PUBLIC_BASE_PATH: isPages ? '/provdsimulation' : '' },
   basePath: isPages ? '/provdsimulation' : '',
   // Emits founders-office/index.html so Pages serves it without a rewrite rule.
   trailingSlash: true,

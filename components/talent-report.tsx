@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Award, X } from 'lucide-react'
+import { X } from 'lucide-react'
+import { BrandMark } from './brand'
 import type { OperatorStats, ReportResult, ToastType } from '@/lib/sim-types'
 import { generateAIReport, tierColor } from '@/lib/report'
 
@@ -68,9 +69,7 @@ export function TalentReport({
           <span className="inline-block size-[9px] rounded-full bg-error" />
           <span className="inline-block size-[9px] rounded-full bg-gilt-dim" />
           <span className="inline-block size-[9px] rounded-full bg-pass" />
-          <p className="ml-2 font-mono text-xs text-muted-ink">
-            provd://grading-engine
-          </p>
+          <p className="ml-2 font-mono text-xs text-muted-ink">provd://grading-engine</p>
           <button
             type="button"
             onClick={onClose}
@@ -102,32 +101,21 @@ export function TalentReport({
         {phase === 'result' && (
           <div className="p-8">
             <div className="mb-6 text-center">
-              <div
-                className="mb-4 inline-flex size-16 items-center justify-center rounded-full border border-gilt"
-                style={{ background: 'rgba(200,169,110,0.15)' }}
-              >
-                <Award className="size-7 text-gilt" />
+              <div className="mb-4 flex justify-center">
+                <BrandMark className="h-12 w-auto" />
               </div>
               <div className="mb-3 inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] border border-border-dark bg-carbon px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em] text-gilt">
                 Provd — Talent Report (Preview)
               </div>
-              <h2 className="text-2xl font-extrabold text-text-warm">
-                {displayName}
-              </h2>
-              <p className="mt-1 text-sm text-muted-ink">
-                AI-Ops Track · Simulation Preview
-              </p>
+              <h2 className="text-2xl font-extrabold text-text-warm">{displayName}</h2>
+              <p className="mt-1 text-sm text-muted-ink">AI-Ops Track · Simulation Preview</p>
             </div>
 
             {/* score */}
             <div className="flex items-center justify-between border-b border-border-dark py-3">
-              <span className="text-[13px] text-muted-ink">
-                Overall simulation score
-              </span>
+              <span className="text-[13px] text-muted-ink">Overall simulation score</span>
               <span>
-                <span className="text-3xl font-extrabold text-text-warm">
-                  {report.score}
-                </span>
+                <span className="text-3xl font-extrabold text-text-warm">{report.score}</span>
                 <span className="text-sm text-muted-ink"> / 100</span>
               </span>
             </div>
@@ -170,8 +158,8 @@ export function TalentReport({
             {/* CTA */}
             <div className="mt-7 text-center">
               <p className="mb-3 text-sm text-muted-ink">
-                This was one task. The Master Simulation runs four weeks — graded by
-                our team and a company partner.
+                This was one task. The Master Simulation runs four weeks — graded by our team and a
+                company partner.
               </p>
               <button
                 type="button"
