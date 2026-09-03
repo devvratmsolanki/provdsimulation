@@ -13,7 +13,7 @@ const DEFAULT_STEPS: { step: number; label: string }[] = [
 
 /**
  * `onNavigate` is declared with method syntax deliberately: bivariant parameter
- * checking lets the AI-Ops sim keep passing its narrower `(s: Stage) => void`.
+ * checking lets the triage sim keep passing its narrower `(s: Stage) => void`.
  */
 export interface SidebarProps {
   current: number

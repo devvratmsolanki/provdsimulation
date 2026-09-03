@@ -287,14 +287,14 @@ export function FoundersSimulation() {
 
   return (
     <div className="min-h-screen">
-      <ContextBar track="Founder's Office Track" />
+      <ContextBar track="Founder's Office" />
       <div className="flex min-h-screen">
         <Sidebar
           current={stage}
           maxReached={maxReached}
           onNavigate={(s) => goTo(s as FounderStage)}
           steps={STEPS}
-          subtitle="Founder's Office"
+          subtitle="Full Simulation"
           duration="13–16 minutes"
         />
 

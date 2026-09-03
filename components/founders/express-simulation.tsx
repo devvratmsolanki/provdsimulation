@@ -105,7 +105,7 @@ export function ExpressSimulation() {
   return (
     <div className="min-h-screen">
       <ContextBar
-        track="Express Preview — Founder's Office"
+        track="Founder's Office"
         note="Three decisions from an eight-stage simulation · about two minutes"
       />
       <div className="flex min-h-screen">
@@ -114,7 +114,7 @@ export function ExpressSimulation() {
           maxReached={maxReached}
           onNavigate={goTo}
           steps={STEPS}
-          subtitle="Founder's Office"
+          subtitle="Express Preview"
           duration="About 2 minutes"
         />
 

@@ -1,5 +1,5 @@
 export function ContextBar({
-  track = 'AI-Ops Track',
+  track = "Founder's Office",
   note = 'One task from a 4-week Provd Master Simulation · full cohorts are graded by our team and a company partner',
 }: {
   track?: string

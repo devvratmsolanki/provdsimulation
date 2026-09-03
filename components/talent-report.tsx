@@ -108,7 +108,7 @@ export function TalentReport({
                 Provd — Talent Report (Preview)
               </div>
               <h2 className="text-2xl font-extrabold text-text-warm">{displayName}</h2>
-              <p className="mt-1 text-sm text-muted-ink">AI-Ops Track · Simulation Preview</p>
+              <p className="mt-1 text-sm text-muted-ink">Founder&apos;s Office · Operational Triage</p>
             </div>
 
             {/* score */}

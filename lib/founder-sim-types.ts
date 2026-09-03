@@ -3,7 +3,7 @@
  * Track 02, route /founders-office. See .founders-spec.md §3 and §4.
  *
  * Flat, serializable, no nesting, no Date, no Map. Every field is written by
- * exactly one stage. Toast types are reused from the AI-Ops sim unchanged.
+ * exactly one stage. Toast types are reused from the triage sim unchanged.
  */
 
 export type Rec = 'save-cordell' | 'chase-series-b' | 'cut-burn' | ''

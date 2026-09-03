@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Provd — Operational Triage Simulation',
+  title: "Provd — Founder's Office: Operational Triage",
   description:
     'A tactical operator simulation: diagnose a revenue collapse, triage the budget, and sequence the recovery. One task from a 4-week Provd Master Simulation.',
   generator: 'v0.app',
