@@ -98,12 +98,13 @@ export function AnomalyChart({
         )}
 
         {/* revenue area + line */}
-        <polygon points={revArea} fill="rgba(62,122,95,0.10)" />
+        <polygon points={revArea} fill="rgba(62,122,95,0.10)" className="area-in" />
         <polyline
           points={revLine}
           fill="none"
           stroke="var(--pass)"
           strokeWidth={2}
+          className="draw"
         />
         {/* server load line */}
         <polyline
@@ -111,6 +112,7 @@ export function AnomalyChart({
           fill="none"
           stroke="var(--error)"
           strokeWidth={2}
+          className="draw draw-late"
         />
 
         {/* anomaly marker once solved */}
@@ -124,6 +126,15 @@ export function AnomalyChart({
               stroke="var(--gilt)"
               strokeWidth={1}
               strokeDasharray="4 4"
+            />
+            <circle
+              cx={xAt(ANOMALY_INDEX)}
+              cy={yAt(revenue[ANOMALY_INDEX])}
+              r={7}
+              fill="none"
+              stroke="var(--gilt)"
+              strokeWidth={2}
+              className="ping"
             />
             <circle
               cx={xAt(ANOMALY_INDEX)}

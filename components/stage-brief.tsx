@@ -52,13 +52,13 @@ export function StageBrief({
 
       {/* ---------- PHASE 1A: THE CLASSROOM ---------- */}
       {phase === '1A' && (
-        <div className="stage-enter">
+        <div className="stage-enter stagger">
           <LessonPlayer onComplete={() => setPhase('1B')} />
 
           <button
             type="button"
             onClick={() => setPhase('1B')}
-            className="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
+            className="sheen mt-8 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
           >
             Complete Module &amp; Enter Sandbox
             <ArrowRight className="size-4" />

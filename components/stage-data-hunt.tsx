@@ -88,15 +88,15 @@ export function StageDataHunt({
 
       <div className="rounded-[var(--radius-md)] border border-border-dark bg-carbon p-6">
         <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <div className="rounded-[var(--radius-sm)] border border-border-dark bg-surface p-4">
+          <div className="lift rounded-[var(--radius-sm)] border border-border-dark bg-surface p-4">
             <p className="text-xs text-muted-ink">Revenue (24h)</p>
             <p className="mt-1 text-xl font-bold text-error">-40%</p>
           </div>
-          <div className="rounded-[var(--radius-sm)] border border-border-dark bg-surface p-4">
+          <div className="lift rounded-[var(--radius-sm)] border border-border-dark bg-surface p-4">
             <p className="text-xs text-muted-ink">Peak Server Load</p>
             <p className="mt-1 text-xl font-bold text-error">98%</p>
           </div>
-          <div className="col-span-2 rounded-[var(--radius-sm)] border border-border-dark bg-surface p-4 sm:col-span-1">
+          <div className="lift col-span-2 rounded-[var(--radius-sm)] border border-border-dark bg-surface p-4 sm:col-span-1">
             <p className="text-xs text-muted-ink">Status</p>
             <p className="mt-1 text-xl font-bold text-text-warm">Investigating</p>
           </div>
@@ -136,7 +136,7 @@ export function StageDataHunt({
                       ? 'border-pass bg-pass/10 text-pass'
                       : isWrong
                         ? 'flash-error border-error bg-error/10 text-error'
-                        : 'border-border-dark bg-surface text-text-warm hover:border-gilt'
+                        : 'lift border-border-dark bg-surface text-text-warm hover:border-gilt'
                   } ${confirmed && !opt.correct ? 'opacity-40' : ''}`}
                 >
                   {isCorrectConfirmed && <Check className="mt-0.5 size-4 shrink-0" />}
@@ -150,7 +150,7 @@ export function StageDataHunt({
             <button
               type="button"
               onClick={onProceed}
-              className="reveal-down mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
+              className="sheen reveal-down mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
             >
               Proceed to Stage 3: Budget Triage
               <ArrowRight className="size-4" />

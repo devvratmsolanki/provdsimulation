@@ -169,7 +169,7 @@ export function TalentReport({
                     'info',
                   )
                 }
-                className="w-full rounded-[var(--radius-md)] bg-gilt px-6 py-4 text-base font-bold text-void transition-colors hover:bg-gilt-dim"
+                className="sheen w-full rounded-[var(--radius-md)] bg-gilt px-6 py-4 text-base font-bold text-void transition-colors hover:bg-gilt-dim"
               >
                 See Cohort 01 — Growth Marketing
                 <span className="mt-1 block text-xs font-semibold opacity-85">

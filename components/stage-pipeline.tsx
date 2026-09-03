@@ -253,7 +253,7 @@ export function StagePipeline({
         type="button"
         disabled={placedCount === 0}
         onClick={handleFinalize}
-        className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+        className="sheen mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
       >
         <ClipboardCheck className="size-4" />
         Finalize Protocol &amp; Generate Report

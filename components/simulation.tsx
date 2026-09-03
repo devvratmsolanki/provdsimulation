@@ -88,7 +88,7 @@ export function Simulation() {
   }, [])
 
   return (
-    <div className="min-h-screen">
+    <div className="triage min-h-screen">
       <ContextBar />
       <div className="flex min-h-screen">
         <Sidebar current={stage} maxReached={maxReached} onNavigate={goTo} />

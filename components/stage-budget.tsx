@@ -138,7 +138,8 @@ export function StageBudget({
           <div>
             <p className="text-xs text-muted-ink">Remediation Funded</p>
             <p
-              className={`text-3xl font-extrabold ${solved ? 'text-pass' : 'text-text-warm'}`}
+              key={crisis}
+              className={`tick text-3xl font-extrabold ${solved ? 'text-pass' : 'text-text-warm'}`}
             >
               {fmt(crisis)}{' '}
               <span className="text-lg font-normal text-muted-ink">/ {fmt(TARGET)}</span>
@@ -220,7 +221,7 @@ export function StageBudget({
         <button
           type="button"
           onClick={onProceed}
-          className="reveal-down mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
+          className="sheen reveal-down mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gilt px-6 py-3.5 text-sm font-bold tracking-[0.02em] text-void transition-colors hover:bg-gilt-dim sm:w-auto"
         >
           Proceed to Stage 4: Execution Pipeline
           <ArrowRight className="size-4" />

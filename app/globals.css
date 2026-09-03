@@ -213,3 +213,135 @@ input:focus-visible,
     transition-duration: 0.001ms !important;
   }
 }
+
+/* =====================================================================
+   TRIAGE SIM — ambient treatment. Scoped to `.triage` so the Founder's
+   Office runs are untouched. Everything here is decorative and inherits
+   the prefers-reduced-motion block above.
+   ===================================================================== */
+
+/* Film grain + vignette: the dossier reads as a surface, not a flat fill.
+   The grain is an inline SVG turbulence, so it costs no request. */
+.triage {
+  position: relative;
+  isolation: isolate;
+}
+.triage::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(200, 169, 110, 0.05), transparent 60%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.55) 100%);
+}
+.triage::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainDrift 8s steps(6) infinite;
+}
+.triage > * {
+  position: relative;
+  z-index: 1;
+}
+@keyframes grainDrift {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -2%); }
+  80% { transform: translate(3%, 1%); }
+}
+
+/* Staggered entrance: content assembles rather than appearing at once. */
+.stagger > * {
+  animation: fadeUp 0.34s var(--ease) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.14s; }
+.stagger > *:nth-child(4) { animation-delay: 0.20s; }
+.stagger > *:nth-child(5) { animation-delay: 0.26s; }
+
+/* Gilt CTAs catch a slow highlight, like light moving over foil. */
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  left: -60%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  animation: sheenSweep 4.5s var(--ease) infinite;
+  pointer-events: none;
+}
+@keyframes sheenSweep {
+  0%, 55% { left: -60%; }
+  100% { left: 130%; }
+}
+
+/* Panels lift slightly toward the cursor. */
+.lift {
+  transition:
+    transform 0.18s var(--ease),
+    border-color 0.18s var(--ease),
+    box-shadow 0.18s var(--ease);
+}
+.lift:hover {
+  transform: translateY(-2px);
+  border-color: rgba(200, 169, 110, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* The telemetry lines draw themselves in. */
+.draw {
+  stroke-dasharray: 2200;
+  stroke-dashoffset: 2200;
+  animation: drawLine 1.5s var(--ease) forwards;
+}
+.draw-late {
+  animation-delay: 0.35s;
+}
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+.area-in {
+  animation: areaIn 0.9s var(--ease) 0.7s both;
+}
+@keyframes areaIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* The anomaly marker pings once located. */
+.ping {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: pingOut 1.9s var(--ease) infinite;
+}
+@keyframes pingOut {
+  0% { transform: scale(1); opacity: 0.55; }
+  70%, 100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* A value that just changed gets a brief nudge, so budget edits register. */
+.tick {
+  animation: tickPop 0.22s var(--ease);
+}
+@keyframes tickPop {
+  50% { transform: scale(1.06); }
+}
