@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Film, Radio, ArrowRight, Play } from 'lucide-react'
+import { Film, Radio, ArrowRight } from 'lucide-react'
+import { LessonPlayer } from './lesson-player'
 
 export function StageBrief({
   operatorName,
@@ -52,17 +53,7 @@ export function StageBrief({
       {/* ---------- PHASE 1A: THE CLASSROOM ---------- */}
       {phase === '1A' && (
         <div className="stage-enter">
-          <div className="flex aspect-video w-full items-center justify-center rounded-[var(--radius-md)] border border-border-dark bg-carbon">
-            <div className="flex flex-col items-center text-center">
-              <div className="flex size-16 items-center justify-center rounded-[var(--radius-sm)] border border-border-dark bg-surface">
-                <Play className="ml-0.5 size-6 text-text-warm" />
-              </div>
-              <p className="mt-4 text-sm font-medium text-text-warm">
-                Video Placeholder: Core Retention Mechanics
-              </p>
-              <p className="mt-1 text-xs text-muted-ink">Runtime 12:04 · Founder&apos;s Office Masterclass</p>
-            </div>
-          </div>
+          <LessonPlayer onComplete={() => setPhase('1B')} />
 
           <button
             type="button"
@@ -88,10 +79,9 @@ export function StageBrief({
             </div>
             <div className="p-6">
               <p className="text-lg leading-relaxed text-text-warm">
-                <span className="font-bold text-gilt">@{displayName}</span>, theoreticals
-                are over. Revenue just dropped{' '}
-                <span className="font-bold text-error">40%</span> on the Day-7 cohort.
-                Find the leak and balance the budget.
+                <span className="font-bold text-gilt">@{displayName}</span>, theoreticals are over.
+                Revenue just dropped <span className="font-bold text-error">40%</span> on the Day-7
+                cohort. Find the leak and balance the budget.
                 <span className="mt-3 block font-mono text-sm text-muted-ink">
                   &gt; You have 3 minutes.
                 </span>
