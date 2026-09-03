@@ -31,6 +31,72 @@ const TIMELINES: { zone: Zone; header: string; dot: string }[] = [
 
 const MAX_SLOTS = 5
 
+const ZONE_CHIPS: { zone: Zone; short: string }[] = [
+  { zone: 'hour1', short: 'Hour 1' },
+  { zone: 'day1', short: 'Day 1' },
+  { zone: 'week1', short: 'Week 1' },
+  { zone: 'bank', short: 'Bank' },
+]
+
+/**
+ * Hoisted to module scope deliberately: declared inside StagePipeline it was a
+ * new component type on every render, so the drag-start re-render remounted the
+ * node mid-drag and the browser cancelled the gesture.
+ */
+function BlockCard({
+  block,
+  zone,
+  draggable,
+  dimmed,
+  onDragStart,
+  onDragEnd,
+  onMove,
+}: {
+  block: Block
+  zone: Zone
+  draggable: boolean
+  dimmed: boolean
+  onDragStart: () => void
+  onDragEnd: () => void
+  onMove: (target: Zone) => void
+}) {
+  return (
+    <div
+      draggable={draggable}
+      onDragStart={(e) => {
+        // Firefox will not start a drag unless dataTransfer carries something.
+        e.dataTransfer.setData('text/plain', block.id)
+        e.dataTransfer.effectAllowed = 'move'
+        onDragStart()
+      }}
+      onDragEnd={onDragEnd}
+      className={`rounded-[var(--radius-sm)] border border-border-dark bg-surface px-3.5 py-3 text-[13px] font-semibold leading-snug text-text-warm select-none ${
+        draggable ? 'cursor-grab active:cursor-grabbing' : 'cursor-not-allowed opacity-40'
+      } ${dimmed ? 'opacity-35' : ''}`}
+    >
+      <div className="flex items-start gap-2.5">
+        <GripVertical className="mt-0.5 size-4 shrink-0 text-muted-ink" />
+        <span>{block.text}</span>
+      </div>
+      {/* Touch and keyboard path — HTML5 drag does not fire on touch at all. */}
+      <div className="mt-2.5 flex flex-wrap gap-1.5 border-t border-border-dark pt-2.5">
+        {ZONE_CHIPS.map(({ zone: z, short }) => (
+          <button
+            key={z}
+            type="button"
+            disabled={zone === z}
+            onClick={() => onMove(z)}
+            aria-label={`Move "${block.text}" to ${short}`}
+            className="min-h-9 rounded-[var(--radius-sm)] border border-border-dark bg-transparent px-2 text-[10px] font-bold uppercase tracking-[0.08em] text-muted-ink transition-colors hover:border-gilt hover:text-text-warm disabled:opacity-25 sm:min-h-8"
+          >
+            {short}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function StagePipeline({
   onFinalize,
   showToast,
@@ -53,16 +119,21 @@ export function StagePipeline({
     return true
   }
 
+  function move(id: string, target: Zone) {
+    if (placement[id] === target) return
+    if (!canDrop(id, target)) {
+      showToast('Only 5 execution slots available. Free one up first.', 'error')
+      return
+    }
+    setPlacement((p) => ({ ...p, [id]: target }))
+  }
+
   function handleDrop(e: React.DragEvent, target: Zone) {
     e.preventDefault()
     setOverZone(null)
-    if (!dragId) return
-    if (!canDrop(dragId, target)) {
-      showToast('Only 5 execution slots available. Free one up first.', 'error')
-      setDragId(null)
-      return
-    }
-    setPlacement((p) => ({ ...p, [dragId]: target }))
+    // Fall back to dataTransfer: dragId is lost if the drag began in another frame.
+    const id = dragId ?? e.dataTransfer.getData('text/plain')
+    if (id) move(id, target)
     setDragId(null)
   }
 
@@ -78,24 +149,6 @@ export function StagePipeline({
     onFinalize({ decoyUsed, correctPlacements })
   }
 
-  function BlockCard({ block }: { block: Block }) {
-    const inBank = placement[block.id] === 'bank'
-    const draggable = !inBank || placedCount < MAX_SLOTS
-    return (
-      <div
-        draggable={draggable}
-        onDragStart={() => setDragId(block.id)}
-        onDragEnd={() => setDragId(null)}
-        className={`flex items-start gap-2.5 rounded-[var(--radius-sm)] border border-border-dark bg-surface px-3.5 py-3 text-[13px] font-semibold leading-snug text-text-warm select-none ${
-          draggable ? 'cursor-grab active:cursor-grabbing' : 'cursor-not-allowed opacity-40'
-        } ${dragId === block.id ? 'opacity-35' : ''}`}
-      >
-        <GripVertical className="mt-0.5 size-4 shrink-0 text-muted-ink" />
-        <span>{block.text}</span>
-      </div>
-    )
-  }
-
   const bankBlocks = BLOCKS.filter((b) => placement[b.id] === 'bank')
 
   return (
@@ -109,9 +162,8 @@ export function StagePipeline({
           Sequence the Recovery
         </h1>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-text-warm">
-          Funds secured. You have{' '}
-          <span className="font-semibold text-gilt">5 execution slots</span> available.
-          Sequence your recovery operations. Leave the noise behind.
+          Funds secured. You have <span className="font-semibold text-gilt">5 execution slots</span>{' '}
+          available. Drag them into a timeline, or use the buttons on each card. Leave the noise behind.
         </p>
       </div>
 
@@ -138,12 +190,20 @@ export function StagePipeline({
         >
           {bankBlocks.length === 0 && (
             <p className="px-2 py-4 text-xs text-muted-ink">
-              All actions deployed. Drag any back here to reconsider.
+              All actions deployed. Send any back here to reconsider.
             </p>
           )}
           {bankBlocks.map((b) => (
             <div key={b.id} className="w-full sm:w-[calc(50%-0.375rem)]">
-              <BlockCard block={b} />
+              <BlockCard
+                block={b}
+                zone="bank"
+                draggable={placedCount < MAX_SLOTS}
+                dimmed={dragId === b.id}
+                onDragStart={() => setDragId(b.id)}
+                onDragEnd={() => setDragId(null)}
+                onMove={(t) => move(b.id, t)}
+              />
             </div>
           ))}
         </div>
@@ -163,9 +223,7 @@ export function StagePipeline({
               onDragLeave={() => setOverZone((z) => (z === zone ? null : z))}
               onDrop={(e) => handleDrop(e, zone)}
               className={`min-h-[210px] rounded-[var(--radius-md)] border-2 border-dashed p-4 transition-colors ${
-                overZone === zone
-                  ? 'border-gilt bg-gilt/[0.06]'
-                  : 'border-border-dark bg-carbon'
+                overZone === zone ? 'border-gilt bg-gilt/[0.06]' : 'border-border-dark bg-carbon'
               }`}
             >
               <div className="mb-3 flex items-center gap-2">
@@ -174,7 +232,16 @@ export function StagePipeline({
               </div>
               <div className="space-y-2">
                 {items.map((b) => (
-                  <BlockCard key={b.id} block={b} />
+                  <BlockCard
+                    key={b.id}
+                    block={b}
+                    zone={zone}
+                    draggable
+                    dimmed={dragId === b.id}
+                    onDragStart={() => setDragId(b.id)}
+                    onDragEnd={() => setDragId(null)}
+                    onMove={(t) => move(b.id, t)}
+                  />
                 ))}
               </div>
             </div>
